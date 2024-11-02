@@ -16,7 +16,8 @@ npm i astro-x-svelte-static-pages-generator@latest
 
 After installation, a basic project template will be set up. Feel free to modify it as needed; the template is provided for reference.
 
-Localization
+## Localization
+
 In the translations folder of the template project, you’ll find sample JSON files with key-value pairs and helper functions for managing translations.
 
 During development, create subfolders within the pages directory for each language prefix you want to support, then call the getLangSettings function to create a language dictionary. You can then reference it as a JavaScript object:
