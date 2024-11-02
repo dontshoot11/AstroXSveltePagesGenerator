@@ -1,0 +1,17 @@
+.component {
+  height: 100px;
+  width: 100px;
+  color: var(--bg-color);
+}
+
+.yellow {
+  background-color: var(--accent-alpha);
+}
+
+.blue {
+  background-color: var(--accent-beta);
+}
+
+.red {
+  background-color: var(--accent-gamma);
+}

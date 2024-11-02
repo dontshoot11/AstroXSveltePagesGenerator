@@ -1,0 +1,40 @@
+---
+type TProps = {
+  title: string;
+  description?: string;
+};
+const { title, description } = Astro.props as TProps;
+
+import { getLangSettings } from "@translations/translationSettings";
+
+import "yet-another-reset.css/reset.css";
+import "./styles/colors.css";
+import "./styles/fonts.css";
+import "./styles/common.css";
+
+const { currentLang } = getLangSettings(Astro.url);
+const rtlLangs = ["ar", "fa", "ur"];
+
+const dir = rtlLangs.includes(currentLang) ? "rtl" : "ltr";
+---
+
+<!doctype html>
+<html lang={currentLang} dir={dir}>
+  <head>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,100..900;1,100..900&display=swap"
+      rel="stylesheet"
+    />
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+  </head>
+  <body>
+    <main>
+      <slot />
+    </main>
+  </body>
+</html>

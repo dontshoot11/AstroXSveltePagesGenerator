@@ -1,17 +1,22 @@
 {
-  "name": "",
+  "name": "astro-x-svelte-static-pages-generator",
   "type": "module",
-  "version": "0.0.1",
+  "version": "0.0.3",
+  "description": "Static Pages Generator based on Astro.js framewor with Svelte integration and some custom scripts",
+  "main": "index.js",
   "scripts": {
-    "dev": "astro dev",
-    "start": "astro dev",
-    "build": "astro check && astro build",
-    "preview": "astro preview",
-    "astro": "astro"
+    "dev": "node scripts/dev.js",
+    "start": "npx astro dev",
+    "build": "npx astro build",
+    "postinstall": "node scripts/setup/initialSetup.js"
   },
   "dependencies": {
+    "@astrojs/svelte": "^5.7.2",
+    "@fontsource-variable/noto-sans": "^5.1.0",
     "astro": "^4.16.8",
-    "@astrojs/check": "^0.9.4",
-    "typescript": "^5.6.3"
+    "autoprefixer": "^10.4.20",
+    "fs-extra": "^11.2.0",
+    "postcss-nested": "^7.0.2",
+    "yet-another-reset.css": "^0.0.3"
   }
 }

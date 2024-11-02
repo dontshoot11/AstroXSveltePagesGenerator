@@ -1,0 +1,13 @@
+---
+import DemoComponent from "@components/DemoComponent/DemoComponent.svelte";
+import { getLangSettings } from "@translations/translationSettings";
+import Layout from "src/layout/Layout.astro";
+const { t } = getLangSettings(Astro.url);
+---
+
+<Layout title={t.title}>
+  <div class="container">
+    <h1>{t.wake_up}</h1>
+    <DemoComponent client:load text={t.button_text} />
+  </div>
+</Layout>
