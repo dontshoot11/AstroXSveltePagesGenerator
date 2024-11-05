@@ -11,7 +11,7 @@ export function createTranslationManager(
   const regex = new RegExp(`\/(${supportedLanguages.join("|")})(\/|$)`);
 
   const match = url.pathname.match(regex);
-  const locale = match ? match[1] : null;
+  const locale = match ? match[1] : defaultLang;
 
   const t = getTranslationsForLocale(locale);
   const localePrefix =
