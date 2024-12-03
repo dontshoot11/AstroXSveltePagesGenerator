@@ -6,7 +6,7 @@ function isRootPackage(dir) {
   const nodeModulesPath = path.join(dir, "node_modules");
 
   if (fs.existsSync(packageJsonPath) && fs.existsSync(nodeModulesPath)) {
-    if (dir.includes("astroxsveltepagesgenerator")) {
+    if (dir.includes("astro-x-svelte-static-pages-generator")) {
       return false;
     }
 
