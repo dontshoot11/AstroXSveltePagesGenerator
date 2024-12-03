@@ -28,27 +28,31 @@ In the translations folder of the template project, you’ll find sample JSON fi
 
 Create an array strings with language prefixes that you will need.
 
-If you don’t need a language prefix for the default text page, set it as an empty string in this array.
-
-During development, write the [getStaticPaths](https://docs.astro.build/en/reference/routing-reference/#getstaticpaths) function, which will take this array and use it during the iteration to build paths for localized pages.
+During development, write the [getStaticPaths](https://docs.astro.build/en/reference/routing-reference/#getstaticpaths) function, which will take this array and use it during the iteration to build paths for localized pages. If you don’t need a language prefix for the default text page, add an `undefied` to `getStaticProps` - it will build directories without language prefixies using default language to localize.
 
 `getStaticPaths` example
 
 ```Astro
-import Layout from "src/layout/Layout.astro";
+---
 import DemoComponent from "@components/DemoComponent/DemoComponent.svelte";
 import { getLangSettings, locales } from "@translations/translationSettings";
+import Layout from "src/layout/Layout.astro";
 
 const { t } = getLangSettings(Astro.url);
 
 type PathType = {
   params: {
-    locale: string;
+    locale?: string;
   };
 };
 
 export async function getStaticPaths() {
   const allPaths: PathType[] = [];
+  allPaths.push({
+    params: {
+      locale: undefined, //param for default language routes without lang prefix
+    },
+  });
   for (const locale of locales) {
     allPaths.push({
       params: {
@@ -59,7 +63,7 @@ export async function getStaticPaths() {
 
   return allPaths;
 }
-
+---
 
 <Layout title={t.title}>
   <div class="container">
@@ -67,6 +71,7 @@ export async function getStaticPaths() {
     <DemoComponent client:load url={Astro.url} />
   </div>
 </Layout>
+
 
 ```
 

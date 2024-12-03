@@ -7,12 +7,17 @@ const { t } = getLangSettings(Astro.url);
 
 type PathType = {
   params: {
-    locale: string;
+    locale?: string;
   };
 };
 
 export async function getStaticPaths() {
   const allPaths: PathType[] = [];
+  allPaths.push({
+    params: {
+      locale: undefined,
+    },
+  });
   for (const locale of locales) {
     allPaths.push({
       params: {
