@@ -3,7 +3,7 @@ import path from "path";
 import { fileURLToPath } from "url";
 import { projectRoot } from "astro-x-svelte-static-pages-generator/scripts/utils/findProjectRoot.js";
 import { copyFileWithLog } from "astro-x-svelte-static-pages-generator/scripts/utils/copyFileWithLog.js";
-import { execSync } from "child_process"; // Импортируем execSync для выполнения команд
+import { execSync } from "child_process";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -48,6 +48,17 @@ async function setTemplates(rootPath) {
     if (!(await fs.exists(destPath))) {
       await copyFileWithLog(sourcePath, destPath);
     }
+  }
+
+  try {
+    console.log("Installing @astrojs/svelte...");
+    execSync("npm install @astrojs/svelte", {
+      cwd: projectRoot,
+      stdio: "inherit",
+    });
+    console.log("@astrojs/svelte installed successfully.");
+  } catch (error) {
+    console.error("Error installing @astrojs/svelte:", error);
   }
 }
 
