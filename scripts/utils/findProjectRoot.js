@@ -1,15 +1,29 @@
-import fs from "fs-extra";
+import fs from "fs";
 import path from "path";
 
-function findProjectRoot(currentDir) {
-  const hasPackageJson = fs.existsSync(path.join(currentDir, "package.json"));
-  const hasNodeModules = fs.existsSync(path.join(currentDir, "node_modules"));
+function isRootPackage(dir) {
+  const packageJsonPath = path.join(dir, "package.json");
+  const nodeModulesPath = path.join(dir, "node_modules");
 
-  if (hasPackageJson && hasNodeModules) {
+  if (fs.existsSync(packageJsonPath) && fs.existsSync(nodeModulesPath)) {
+    if (dir.includes("astroxsveltepagesgenerator")) {
+      return false;
+    }
+
+    const parentNodeModulesPath = path.dirname(nodeModulesPath);
+    return parentNodeModulesPath === dir;
+  }
+
+  return false;
+}
+
+function findProjectRoot(currentDir) {
+  if (isRootPackage(currentDir)) {
     return currentDir;
   }
 
   const parentDir = path.dirname(currentDir);
+
   if (parentDir === currentDir) {
     if (process.env.INIT_CWD) {
       return process.env.INIT_CWD;

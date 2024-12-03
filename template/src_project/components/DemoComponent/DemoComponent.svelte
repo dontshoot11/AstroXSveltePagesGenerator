@@ -1,8 +1,12 @@
 <script>
-  export let text;
+  export let url;
+  import { getLangSettings } from "@translations/translationSettings";
   import styles from "./style.module.css";
 
+  const { t } = getLangSettings(url);
+
   const colors = ["red", "blue", "yellow"];
+
   let randomColor = getRandomColor(null);
 
   function getRandomColor(currentColor) {
@@ -23,5 +27,5 @@
   class={`${styles.component} ${styles[randomColor]}`}
   on:click={changeColor}
 >
-  {text}
+  {t.text}
 </button>

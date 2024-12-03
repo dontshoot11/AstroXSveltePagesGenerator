@@ -7,6 +7,8 @@ const langs = {
   es: es,
 };
 
+export const locales = ["", "es"];
+
 export const getLangSettings = (url) => {
   return createTranslationManager(url, langs);
 };

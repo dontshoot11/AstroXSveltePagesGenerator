@@ -20,7 +20,51 @@ After installation, a basic project template will be set up. Feel free to modify
 
 In the translations folder of the template project, you’ll find sample JSON files with key-value pairs and helper functions for managing translations.
 
-During development, create subfolders within the pages directory for each language prefix you want to support, then call the getLangSettings function to create a language dictionary. You can then reference it as a JavaScript object:
+Create an array strings with language prefixes that you will need.
+
+If you don’t need a language prefix for the default text page, set it as an empty string in this array.
+
+During development, write the [getStaticPaths](https://docs.astro.build/en/reference/routing-reference/#getstaticpaths) function, which will take this array and use it during the iteration to build paths for localized pages.
+
+`getStaticPaths` example
+
+```Astro
+import Layout from "src/layout/Layout.astro";
+import DemoComponent from "@components/DemoComponent/DemoComponent.svelte";
+import { getLangSettings, locales } from "@translations/translationSettings";
+
+const { t } = getLangSettings(Astro.url);
+
+type PathType = {
+  params: {
+    locale: string;
+  };
+};
+
+export async function getStaticPaths() {
+  const allPaths: PathType[] = [];
+  for (const locale of locales) {
+    allPaths.push({
+      params: {
+        locale: locale,
+      },
+    });
+  }
+
+  return allPaths;
+}
+
+
+<Layout title={t.title}>
+  <div class="container">
+    <h1>{t.wake_up}</h1>
+    <DemoComponent client:load url={Astro.url} />
+  </div>
+</Layout>
+
+```
+
+Using translates:
 
 ```javascript
 const { t } = getLangSettings(Astro.url);
@@ -32,7 +76,8 @@ const { t } = getLangSettings(Astro.url);
 </div>
 ```
 
-Note: You can only create the dictionary in an Astro component since it relies on the `Astro.url ` object to determine the locale. To use the dictionary in other components, pass it as a prop.
+Note: You can only create the dictionary in an Astro component since it relies on the `Astro.url ` object to determine the locale.
+Pass astro.url as a prop into svelte components and then use it as usual to extract the language prefix and retrieve the corresponding translation object.
 
 ## Utility Functions
 
