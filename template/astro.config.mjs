@@ -6,5 +6,5 @@ export default defineConfig({
   build: {
     assets: "assets",
   },
-  integrations: [svelte(), relativeLinks()],
+  integrations: [relativeLinks(), svelte()],
 });

@@ -3,6 +3,7 @@ import path from "path";
 import { fileURLToPath } from "url";
 import { projectRoot } from "astro-x-svelte-static-pages-generator/scripts/utils/findProjectRoot.js";
 import { copyFileWithLog } from "astro-x-svelte-static-pages-generator/scripts/utils/copyFileWithLog.js";
+import { execSync } from "child_process"; // Импортируем execSync для выполнения команд
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -31,6 +32,7 @@ async function setTemplates(rootPath) {
   const filesToCopy = [
     { source: ".gitignore-template", dest: ".gitignore" },
     { source: "astro.config.mjs", dest: "astro.config.mjs" },
+    { source: "svelte.config.mjs", dest: "svelte.config.mjs" },
     { source: "types.d.ts", dest: "types.d.ts" },
     { source: "../README.md", dest: "README.md" },
     { source: "src_project", dest: "src" },
