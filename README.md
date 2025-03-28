@@ -14,12 +14,6 @@ To start, install packages:
 npm i astro-x-svelte-static-pages-generator@latest
 ```
 
-install integrations
-
-```bash
-npm i @astrojs/svelte && npm i astro-relative-links
-```
-
 After installation, a basic project template will be set up. Feel free to modify it as needed; the template is provided for reference.
 
 ## Localization
