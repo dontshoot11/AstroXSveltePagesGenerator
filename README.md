@@ -14,7 +14,7 @@ To start, install packages:
 npm i astro-x-svelte-static-pages-generator@latest
 ```
 
-Then, install depencies
+Then, install dependencies
 
 ```bash
 npm i astro-relative-links
