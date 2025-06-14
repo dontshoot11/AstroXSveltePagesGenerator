@@ -1,12 +1,12 @@
-# Astro x Svelte Static Pages Generator
+# Astro x Svelte Static Pages Generator 🚀
 
-This is a static page generator built with [Astro](https://astro.build/) and [Svelte](https://svelte.dev/), with custom scripts added for convenient multilingual support.
+This is a static page generator built with [Astro](https://astro.build/) and [Svelte](https://svelte.dev/), with custom scripts added for convenient multilingual support. 🌍
 
 The project follows the [Astro Islands](https://docs.astro.build/en/concepts/islands/) philosophy: most computations are handled during the build process, producing a clean project with interactive "islands" created with Svelte.
 
 A custom solution is used to support multilingual capabilities.
 
-## Getting Started
+## 🛠 Getting Started
 
 To start, install packages:
 
@@ -22,7 +22,7 @@ npm i astro-relative-links
 
 After installation, a basic project template will be set up. Feel free to modify it as needed; the template is provided for reference.
 
-## Localization
+## 🌐 Localization
 
 In the translations folder of the template project, you’ll find sample JSON files with key-value pairs and helper functions for managing translations.
 
@@ -126,11 +126,14 @@ import { getTranslate } from "astro-x-svelte-static-pages-generator";
 
 ```
 
-## Utility Functions
+⚠️ Note: Due to the rendering behavior of the development server, some translations may not appear correctly on the first load during local development. If you notice any anomalies (e.g. fallback texts showing up despite existing translations), simply reload the page.
+This does not affect the production build — all translations are compiled correctly from the start.
+
+## 🧰 Utility Functions
 
 Several helpful functions are included in the project for general use:
 
-### `debounce`
+### `debounce` ⏱
 
 Limits the number of times a function is called within a specified period. It takes a function as the first argument and a delay as the second. This decorator is useful when you need to reduce the number of function calls, such as during page scroll or resize events.
 
@@ -142,7 +145,7 @@ const debouncedFunction = debounce(() => console.log("Function call"), 300);
 window.addEventListener("resize", debouncedFunction);
 ```
 
-### `throttle`
+### `throttle` ⚙️
 
 Another decorator that reduces function call frequency, ensuring the function is called no more than once within a given interval.
 
@@ -154,7 +157,7 @@ const throttledFunction = throttle(() => console.log("Function call"), 200);
 window.addEventListener("resize", throttledFunction);
 ```
 
-### `getOS`
+### `getOS` 💻
 
 Returns the operating system based on the user's browser user agent.
 
@@ -165,7 +168,7 @@ import { getOS } from "astro-x-svelte-static-pages-generator";
 const OS = getOS();
 ```
 
-### `getCurrentLang`
+### `getCurrentLang` 🌍
 
 Returns page locale. Works in Astro context, can be passed as data-lang.
 
@@ -174,7 +177,7 @@ import { geCurrentLang } from "astro-x-svelte-static-pages-generator";
 const currentLang = getCurrentLang();
 ```
 
-### `checkDate`
+### `checkDate` 📅
 
 Checks if a specified date has passed, returning a boolean.
 

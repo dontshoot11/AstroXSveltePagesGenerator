@@ -24,5 +24,5 @@
   class={`${styles.component} ${styles[randomColor]}`}
   on:click={changeColor}
 >
-  {getTranslate("text", "text fallback")}
+  {getTranslate("button_text", "button text fallback")}
 </button>

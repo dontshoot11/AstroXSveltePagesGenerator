@@ -15,11 +15,14 @@ function loadTranslations() {
     fs.readdirSync(dir)
       .filter(
         (file) =>
-          file.endsWith(".json") && /^[a-z]{2}_[A-Z]{2}\.json$/i.test(file)
+          file.endsWith(".json") && /^[a-z]{2}(?:_[A-Z]{2})?\.json$/i.test(file)
       )
       .forEach((file) => {
         try {
-          const langCode = file.split("_")[0].toLowerCase();
+          const langCode = file
+            .replace(/\.json$/, "")
+            .split("_")[0]
+            .toLowerCase();
           const content = fs.readFileSync(path.join(dir, file), "utf-8");
           langs[langCode] = JSON.parse(content);
         } catch (e) {
@@ -37,7 +40,7 @@ export function customTranslationPlugin() {
   const serverKeys = new Set();
   const clientKeys = new Set();
   let translationsCache = null;
-  let pendingUpdate = false;
+  let oldGlobals = globalThis.translations;
 
   const updateGlobals = () => {
     if (!translationsCache) translationsCache = loadTranslations();
@@ -68,11 +71,16 @@ export function customTranslationPlugin() {
     globalThis.clientTranslations = result.clientTranslations;
 
     if (isDev) {
-      console.log("[i18n] Translations updated", {
-        serverKeys: serverKeys.size,
-        clientKeys: clientKeys.size,
-        timestamp: new Date().toISOString(),
-      });
+      if (
+        JSON.stringify(oldGlobals) !== JSON.stringify(globalThis.translations)
+      ) {
+        oldGlobals = JSON.parse(JSON.stringify(globalThis.translations));
+        console.log("[i18n] Translations updated", {
+          serverKeys: serverKeys.size,
+          clientKeys: clientKeys.size,
+          timestamp: new Date().toISOString(),
+        });
+      }
     }
   };
 
@@ -121,13 +129,7 @@ export function customTranslationPlugin() {
                     }
                   });
 
-                  if (hasUpdates) {
-                    if (isDev) {
-                      pendingUpdate = true;
-                    } else {
-                      updateGlobals();
-                    }
-                  }
+                  updateGlobals();
 
                   return code;
                 },
@@ -136,16 +138,24 @@ export function customTranslationPlugin() {
           },
         });
       },
-      "astro:server:start": () => {
-        if (isDev) {
-          setInterval(() => {
-            if (pendingUpdate) {
-              updateGlobals();
-              pendingUpdate = false;
-            }
-          }, 250);
-        }
+      "astro:server:setup": ({ server }) => {
+        server.middlewares.use((req, _res, next) => {
+          updateGlobals();
+          if (
+            JSON.stringify(oldGlobals) !==
+            JSON.stringify(globalThis.translations)
+          ) {
+            oldGlobals = JSON.parse(JSON.stringify(globalThis.translations));
+            server.ws.send({ type: "full-reload" });
+          }
+
+          next();
+        });
       },
+      "astro:server:start": () => {
+        updateGlobals();
+      },
+
       "astro:build:setup": () => {
         updateGlobals();
       },

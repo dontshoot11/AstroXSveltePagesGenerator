@@ -199,6 +199,11 @@ export const getTranslate = (key, defaultMessage) => {
   } else {
     t = globalThis.translations[lang];
   }
+
+  if (!t) {
+    return defaultMessage;
+  }
+
   const valuesSet = new Set(Object.values(t));
 
   if (valuesSet.has(key)) {
