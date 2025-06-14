@@ -86,6 +86,8 @@ globalThis.AstroUrl = Astro.url;
 
 3. In the same component, add the required translations to a data attribute on the <html> tag so they are available on the client side.
 
+⚠️ Note: Translations used in .astro components are automatically excluded from the client bundle and won't be available in the browser. If you also want to ignore translations used in .ts and .js files (e.g., files with constants for static markup), add the "only:static" directive as a string in those files. This ensures that only the necessary keys are included in the client-side bundle.
+
 ```Astro
 ---
 import { getCurrentLang } from "astro-x-svelte-static-pages-generator";
