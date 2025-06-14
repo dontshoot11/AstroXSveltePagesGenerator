@@ -117,15 +117,12 @@ export function customTranslationPlugin() {
                   const isClient = !id.endsWith(".astro");
                   const keys = extractKeys(code);
 
-                  let hasUpdates = false;
                   keys.forEach((key) => {
                     if (!serverKeys.has(key)) {
                       serverKeys.add(key);
-                      hasUpdates = true;
                     }
                     if (isClient && !clientKeys.has(key)) {
                       clientKeys.add(key);
-                      hasUpdates = true;
                     }
                   });
 
