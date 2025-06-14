@@ -1,25 +1,30 @@
 ---
+globalThis.AstroUrl = Astro.url;
 type TProps = {
   title: string;
   description?: string;
 };
 const { title, description } = Astro.props as TProps;
 
-import { getLangSettings } from "@translations/translationSettings";
+import { getCurrentLang } from "astro-x-svelte-static-pages-generator";
 
 import "yet-another-reset.css/reset.css";
 import "./styles/colors.css";
 import "./styles/fonts.css";
 import "./styles/common.css";
 
-const { currentLang } = getLangSettings(Astro.url);
 const rtlLangs = ["ar", "fa", "ur"];
-
+const currentLang = getCurrentLang();
 const dir = rtlLangs.includes(currentLang) ? "rtl" : "ltr";
+const translations = globalThis.clientTranslations;
 ---
 
 <!doctype html>
-<html lang={currentLang} dir={dir}>
+<html
+  lang={currentLang}
+  dir={dir}
+  data-page-translations={JSON.stringify(translations[currentLang])}
+>
   <head>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />

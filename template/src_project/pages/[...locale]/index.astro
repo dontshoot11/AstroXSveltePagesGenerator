@@ -1,9 +1,10 @@
 ---
 import DemoComponent from "@components/DemoComponent/DemoComponent.svelte";
-import { getLangSettings, locales } from "@translations/translationSettings";
+import { getTranslate } from "astro-x-svelte-static-pages-generator";
+
 import Layout from "src/layout/Layout.astro";
 
-const { t } = getLangSettings(Astro.url);
+export const locales = ["en", "es"];
 
 type PathType = {
   params: {
@@ -30,9 +31,9 @@ export async function getStaticPaths() {
 }
 ---
 
-<Layout title={t.title}>
+<Layout title={getTranslate("title", "titleFallback")}>
   <div class="container">
-    <h1>{t.wake_up}</h1>
-    <DemoComponent client:load url={Astro.url} />
+    <h1>{getTranslate("wake_up", "wake up fallback")}</h1>
+    <DemoComponent client:only="svelte" />
   </div>
 </Layout>

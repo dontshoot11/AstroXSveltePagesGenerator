@@ -4,6 +4,17 @@ import {
   getOS,
   getCookie,
   checkDate,
+  getTranslate,
 } from "astro-x-svelte-static-pages-generator/scripts/helpers/helpers";
 
-export { debounce, throttle, getOS, getCookie, checkDate };
+import { getCurrentLang } from "astro-x-svelte-static-pages-generator/scripts/translationUtils/translationUtils";
+
+export {
+  getTranslate,
+  debounce,
+  throttle,
+  getOS,
+  getCookie,
+  checkDate,
+  getCurrentLang,
+};

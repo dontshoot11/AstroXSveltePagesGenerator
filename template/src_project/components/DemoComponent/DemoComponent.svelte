@@ -1,9 +1,6 @@
 <script>
-  export let url;
-  import { getLangSettings } from "@translations/translationSettings";
+  import { getTranslate } from "astro-x-svelte-static-pages-generator";
   import styles from "./style.module.css";
-
-  const { t } = getLangSettings(url);
 
   const colors = ["red", "blue", "yellow"];
 
@@ -27,5 +24,5 @@
   class={`${styles.component} ${styles[randomColor]}`}
   on:click={changeColor}
 >
-  {t.text}
+  {getTranslate("text", "text fallback")}
 </button>

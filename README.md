@@ -28,17 +28,18 @@ In the translations folder of the template project, you’ll find sample JSON fi
 
 Create an array strings with language prefixes that you will need.
 
-During development, write the [getStaticPaths](https://docs.astro.build/en/reference/routing-reference/#getstaticpaths) function, which will take this array and use it during the iteration to build paths for localized pages. If you don’t need a language prefix for the default text page, add an `undefied` to `getStaticProps` - it will build directories without language prefixies using default language to localize.
+1. During development, write the [getStaticPaths](https://docs.astro.build/en/reference/routing-reference/#getstaticpaths) function, which will take this array and use it during the iteration to build paths for localized pages. If you don’t need a language prefix for the default text page, add an `undefied` to `getStaticProps` - it will build directories without language prefixies using default language to localize.
 
 `getStaticPaths` example
 
 ```Astro
 ---
 import DemoComponent from "@components/DemoComponent/DemoComponent.svelte";
-import { getLangSettings, locales } from "@translations/translationSettings";
+import { getTranslate } from "astro-x-svelte-static-pages-generator";
+
 import Layout from "src/layout/Layout.astro";
 
-const { t } = getLangSettings(Astro.url);
+export const locales = ["en", "es"];
 
 type PathType = {
   params: {
@@ -50,7 +51,7 @@ export async function getStaticPaths() {
   const allPaths: PathType[] = [];
   allPaths.push({
     params: {
-      locale: undefined, //param for default language routes without lang prefix
+      locale: undefined,
     },
   });
   for (const locale of locales) {
@@ -65,30 +66,65 @@ export async function getStaticPaths() {
 }
 ---
 
-<Layout title={t.title}>
+<Layout title={getTranslate("title", "titleFallback")}>
   <div class="container">
-    <h1>{t.wake_up}</h1>
-    <DemoComponent client:load url={Astro.url} />
+    <h1>{getTranslate("wake_up", "wake up fallback")}</h1>
+    <DemoComponent client:only="svelte" />
   </div>
 </Layout>
 
+```
+
+2. In a high-level component, such as `Layout`, store Astro.url in a global variable to make it accessible during static site generation.
+
+```Astro
+---
+globalThis.AstroUrl = Astro.url;
+---
 
 ```
+
+3. In the same component, add the required translations to a data attribute on the <html> tag so they are available on the client side.
+
+```Astro
+---
+import { getCurrentLang } from "astro-x-svelte-static-pages-generator";
+const currentLang = getCurrentLang();
+const translations = globalThis.clientTranslations;
+---
+
+<!doctype html>
+<html
+  lang={currentLang}
+  dir={dir}
+  data-page-translations={JSON.stringify(translations[currentLang])}
+>
+
+```
+
+4. Register the translation plugin in astro.config.mjs to enable localization support.
+
+```mjs
+import { defineConfig } from "astro/config";
+import { customTranslationPlugin } from "astro-x-svelte-static-pages-generator/translationUtils/customTranslationPlugin.mjs";
+
+export default defineConfig({
+  integrations: [customTranslationPlugin()],
+});
+```
+
+5. To use translations after proper setup, simply call the getTranslate function with the translation key as the first argument and a fallback string as the second argument (used as the default value). You can use the function in any context — it will automatically access the appropriate set of translation keys at runtime.
 
 Using translates:
 
-```javascript
-const { t } = getLangSettings(Astro.url);
-```
+```Astro
+---
+import { getTranslate } from "astro-x-svelte-static-pages-generator";
+---
 
-```astro
-<div>
-{t.your_key}
-</div>
-```
+<p>{getTranslate('key', 'default value')}</p>
 
-Note: You can only create the dictionary in an Astro component since it relies on the `Astro.url ` object to determine the locale.
-Pass astro.url as a prop into svelte components and then use it as usual to extract the language prefix and retrieve the corresponding translation object.
+```
 
 ## Utility Functions
 
@@ -127,6 +163,15 @@ Note: This function only works on the client side.
 ```javascript
 import { getOS } from "astro-x-svelte-static-pages-generator";
 const OS = getOS();
+```
+
+### `getCurrentLang`
+
+Returns page locale. Works in Astro context, can be passed as data-lang.
+
+```javascript
+import { geCurrentLang } from "astro-x-svelte-static-pages-generator";
+const currentLang = getCurrentLang();
 ```
 
 ### `checkDate`

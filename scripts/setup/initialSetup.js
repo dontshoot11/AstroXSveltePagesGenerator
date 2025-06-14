@@ -38,6 +38,7 @@ async function setTemplates(rootPath) {
     { source: "src_project", dest: "src" },
     { source: "tsconfig-template", dest: "tsconfig.json" },
     { source: "public", dest: "public" },
+    { source: "translations", dest: "translations" },
   ];
 
   console.log("Minimalistic set up");
